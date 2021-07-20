@@ -7,12 +7,7 @@ import SimpleLightbox from "simplelightbox";
 import '../node_modules/simplelightbox/src/simple-lightbox.scss'
 
 
-    let page
-
-  
-
-
-
+let page
 let imagesToFind;
 
 
@@ -46,7 +41,6 @@ function getGalleryMarkup(img) {
 
 async function renderMarkup() {
 
-
     try {
         const images = await fetchImg(imagesToFind, page)
 
@@ -63,8 +57,7 @@ async function renderMarkup() {
             Notify.failure(`We're sorry, but you've reached the end of search results.`)
             return
         }
-
-         
+       
         getGalleryMarkup(images)
         
     } catch (error) {
@@ -72,7 +65,6 @@ async function renderMarkup() {
     }
 
 }
-
 
 // бесконечный скролл
 window.addEventListener('scroll', onScroll)
@@ -89,15 +81,12 @@ function onScroll() {
 }
 
 
-
-
 //галерея
 
-
-
-
 refs().gallery.addEventListener('click', (e) => {
-e.preventDefault()
+    e.preventDefault()
+    let modal = new SimpleLightbox('.gallery a')
+    modal.open()
 }
 )
 

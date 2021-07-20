@@ -83,10 +83,21 @@ function onScroll() {
 
 //галерея
 
+
+
+
 refs().gallery.addEventListener('click', (e) => {
     e.preventDefault()
-    let modal = new SimpleLightbox('.gallery a')
+
+    const modal = new SimpleLightbox('.photo-card a')
+
     modal.open()
+
 }
 )
 
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape') {
+        modal.close()
+    }
+})

@@ -1,0 +1,15 @@
+.country-info__item {
+  font-size: 30px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.country-info__title {
+  font-size: 75px;
+  padding: 10px;
+}
+
+.country-info__title img {
+  margin-right: 30px;
+}

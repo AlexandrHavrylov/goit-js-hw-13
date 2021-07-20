@@ -1,0 +1,11 @@
+@import './components/comon';
+@import './components/country-list';
+@import './components/country-info';
+
+#search-box {
+  font: inherit;
+  padding: 8px;
+  max-width: 320px;
+  margin-bottom: 16px;
+  font-size: 30px;
+}

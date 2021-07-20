@@ -7,14 +7,14 @@ import SimpleLightbox from "simplelightbox";
 import '../node_modules/simplelightbox/src/simple-lightbox.scss'
 
 
-
+    let page
 
   
 
 
 
 let imagesToFind;
-let page = 1;
+
 
 
 // Запрос данных + создание разметки
@@ -22,6 +22,7 @@ let page = 1;
 refs().searchBtn.addEventListener('click', onSearchBtnClick)
 
 function onSearchBtnClick(e) {
+    page = 1
     e.preventDefault()
     refs().gallery.innerHTML = ''
     imagesToFind && renderMarkup()
@@ -44,6 +45,8 @@ function getGalleryMarkup(img) {
 }
 
 async function renderMarkup() {
+
+
     try {
         const images = await fetchImg(imagesToFind, page)
 
@@ -52,13 +55,13 @@ async function renderMarkup() {
             return
         }
    
-
-        //Каким другим образом можно органичить нотификашку, что бы показывала только при 1м запросе?
+        //Каким-то другим образом можно органичить нотификашку, что бы показывала только при 1м запросе?
         if (page === 1) {
              Notify.info(`Hooray! We found ${images.totalHits} images.`)      
         }
-        if (refs().allImages >= images.totalHits) {
-                Notify.failure(`We're sorry, but you've reached the end of search results.`) 
+        if (refs().allImages.length >= images.totalHits) {
+            Notify.failure(`We're sorry, but you've reached the end of search results.`)
+            return
         }
 
          

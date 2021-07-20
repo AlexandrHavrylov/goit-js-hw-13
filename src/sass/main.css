@@ -17,36 +17,28 @@ ul {
   list-style: none;
 }
 
-.country-list__item {
-  font-size: 35px;
+.search-form {
+  padding: 20px;
+  text-align: center;
+  background-color: blue;
 }
 
-.country-list__item span {
-  margin-left: 10px;
-}
-
-.country-info__item {
+.search-form button {
   font-size: 30px;
 }
 
-.country-info__item:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.country-info__title {
-  font-size: 75px;
-  padding: 10px;
-}
-
-.country-info__title img {
-  margin-right: 30px;
-}
-
-#search-box {
-  font: inherit;
-  padding: 8px;
-  max-width: 320px;
-  margin-bottom: 16px;
+.search-form input {
   font-size: 30px;
+  margin-right: 0;
+}
+
+.gallery {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 10px;
 }
 /*# sourceMappingURL=main.css.map */

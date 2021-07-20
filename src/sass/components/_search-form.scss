@@ -1,0 +1,14 @@
+.search-form {
+  padding: 20px;
+  text-align: center;
+  background-color: blue;
+
+  & button {
+    font-size: 30px;
+  }
+}
+
+.search-form input {
+  font-size: 30px;
+  margin-right: 0;
+}

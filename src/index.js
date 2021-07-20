@@ -1,64 +1,100 @@
 import './sass/main.scss';
-
-import { fetchCountries } from './js/fetch-api';
-import countryListTmp from './templates/country-list.hbs'
-import countryTmp from './templates/country.hbs'
-import Notiflix from "notiflix";
-const debounce = require('lodash.debounce')
-
-const DEBOUNCE_DELAY = 300;
+import galleryImagesTmp from './templates/gallaryImages.hbs'
+import { fetchImg } from './js/fetch-api';
+import { refs } from './js/get-refs';
+import { Notify } from "notiflix";
+import SimpleLightbox from "simplelightbox";
+import '../node_modules/simplelightbox/src/simple-lightbox.scss'
 
 
-const refs = {
-    input: document.querySelector('#search-box'),
-    countryList: document.querySelector('.country-list'),
-    countryInfo: document.querySelector('.country-info'),
-}
-
-refs.input.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY))
-
-function onInput() {
-    const countryToFind = refs.input.value.trim();
-    if (!countryToFind) {
-        refs.countryList.innerHTML = '';
-    }
-    countryToFind && countriesMarkup(countryToFind);
-    }
 
 
-function countriesMarkup(name) {
-    fetchCountries(name).then(country => getMarkup(country))  
-}
+  
 
-function getMarkup(country) {
-      if (!country) {
-           clearMarkup()
-          Notiflix.Notify.failure('Oops, there is no country with that name')
-       return
-        }
+
+
+let imagesToFind;
+let page = 1;
+
+
+// Запрос данных + создание разметки
+
+refs().searchBtn.addEventListener('click', onSearchBtnClick)
+
+function onSearchBtnClick(e) {
+    e.preventDefault()
+    refs().gallery.innerHTML = ''
+    imagesToFind && renderMarkup()
      
-        if (country.length === 1) {
-            clearMarkup()
-            const markup = countryTmp(country)
-            refs.countryInfo.innerHTML = markup
+}
+
+// Получаем значение для поиска
+refs().searchForm.addEventListener('input', onSearchFormInput)
+
+function onSearchFormInput() {
+     imagesToFind = refs().serchQuery.value.trim()
+    return imagesToFind
+}
+
+// Получаем разметку галлереи
+
+function getGalleryMarkup(img) {
+    const markup = galleryImagesTmp(img)
+    refs().gallery.insertAdjacentHTML('beforeend', markup)
+}
+
+async function renderMarkup() {
+    try {
+        const images = await fetchImg(imagesToFind, page)
+
+        if (images.hits.length === 0) {
+            Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+            return
         }
-    
-    if (country.length > 10) {
-        clearMarkup()
-         Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+   
+
+        //Каким другим образом можно органичить нотификашку, что бы показывала только при 1м запросе?
+        if (page === 1) {
+             Notify.info(`Hooray! We found ${images.totalHits} images.`)      
+        }
+        if (refs().allImages >= images.totalHits) {
+                Notify.failure(`We're sorry, but you've reached the end of search results.`) 
+        }
+
          
-    }
-    if (country.length > 1 && country.length <= 10) {
-        clearMarkup()
-        const markup = countryListTmp(country)
-        refs.countryList.innerHTML = markup
+        getGalleryMarkup(images)
+        
+    } catch (error) {
+    console.log(error)
     }
 
-    
 }
 
 
-function clearMarkup() {
-    refs.countryInfo.innerHTML = ''
-    refs.countryList.innerHTML =''
+// бесконечный скролл
+window.addEventListener('scroll', onScroll)
+
+function onScroll() {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight > scrollHeight - 30) {
+        page += 1;
+        renderMarkup()
+        
+
+    }
 }
+
+
+
+
+//галерея
+
+
+
+
+refs().gallery.addEventListener('click', (e) => {
+e.preventDefault()
+}
+)
+

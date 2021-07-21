@@ -33,17 +33,20 @@ function onSearchFormInput() {
 }
 
 // Получаем разметку галлереи
+ const modal = new SimpleLightbox('.photo-card a')
 
 function getGalleryMarkup(img) {
+   
     const markup = galleryImagesTmp(img)
     refs().gallery.insertAdjacentHTML('beforeend', markup)
+    modal.refresh()
 }
 
 async function renderMarkup() {
 
     try {
         const images = await fetchImg(imagesToFind, page)
-
+      
         if (images.hits.length === 0) {
             Notify.failure('Sorry, there are no images matching your search query. Please try again.')
             return
@@ -57,7 +60,7 @@ async function renderMarkup() {
             Notify.failure(`We're sorry, but you've reached the end of search results.`)
             return
         }
-       
+     
         getGalleryMarkup(images)
         
     } catch (error) {
@@ -89,15 +92,15 @@ function onScroll() {
 refs().gallery.addEventListener('click', (e) => {
     e.preventDefault()
 
-    const modal = new SimpleLightbox('.photo-card a')
+    
 
-    modal.open()
+    // modal.open()
 
 }
 )
 
-window.addEventListener('keydown', (e) => {
-    if (e.code === 'Escape') {
-        modal.close()
-    }
-})
+// window.addEventListener('keydown', (e) => {
+//     if (e.code === 'Escape') {
+//         modal.close()
+//     }
+// })
